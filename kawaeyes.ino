@@ -1,23 +1,23 @@
 #include <LovyanGFX.hpp>
 #include "lgfxesp32c3.hpp"
+#include "mapdata.hpp"
 
 MyLGFX lcd;  // LGFX → MyLGFX に変更
 
 void setup(void) {
   Serial.begin(115200);
   lcd.init();
-  lcd.setRotation(0);
+  lcd.setRotation(3);
   lcd.setBrightness(128);
   lcd.setColorDepth(24);
+  
+  //背景(日本地図を描写)
   lcd.fillScreen(TFT_DARKGRAY);  // OK
-  lcd.fillCircle(100, 100, 50, TFT_YELLOW);  // 円の塗りつぶし
+  for (int i = 0; i < NUM_LINES; ++i) {
+    lcd.drawLine(lines[i][0], lines[i][1], lines[i][2], lines[i][3], TFT_GREEN);
+  }
 }
 
 void loop(void) {
-  uint16_t tX, tY;
-  if (lcd.getTouch(&tX, &tY)) {
-    Serial.printf("Touched: (%d, %d)\n", tX, tY);
-    lcd.setColor(TFT_YELLOW);  // ✅ 修正: lgfx::Yellow → TFT_YELLOW
-    lcd.drawCircle(tX, tY, 20);
-  }
+
 }
