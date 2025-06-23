@@ -3,7 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 # 画像の読み込みとリサイズ
-img = cv2.imread("map.png", cv2.IMREAD_GRAYSCALE)
+img = cv2.imread("/Users/kawashimasatoshishin/kawaradardisplay/kawaeyes/map.png", cv2.IMREAD_GRAYSCALE)
 img_resized = cv2.resize(img, (320, 240))
 
 # 二値化
@@ -57,4 +57,4 @@ with open("mapdata.hpp", "w") as f:
         f.write(f"  {{{x0}, {y0}, {x1}, {y1}}}{comma}\n")
     f.write("};\n")
 
-print("lines.hpp を出力しました。")
+print("mapdata.hpp を出力しました。")
