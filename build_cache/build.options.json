@@ -1,9 +1,0 @@
-{
-  "additionalFiles": "../..,../..,../..,../..,../..,../..,../..,../..,../..",
-  "compiler.optimization_flags": "-Os",
-  "customBuildProperties": "build.warn_data_percentage=75",
-  "fqbn": "esp32:esp32:esp32c3",
-  "hardwareFolders": "/Users/kawashimasatoshishin/Library/Arduino15/packages",
-  "otherLibrariesFolders": "/Users/kawashimasatoshishin/Documents/Arduino/libraries",
-  "sketchLocation": "/Users/kawashimasatoshishin/kawaradardisplay/kawaeyes"
-}
