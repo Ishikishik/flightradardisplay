@@ -84,8 +84,10 @@ for (JsonPair kv : doc.as<JsonObject>()) {
     showairplane(ip, lon_min, pic_lon, lat_max, pic_lat); 
     return;
   }
+  screenSprite.fillScreen(0);
   mapSprite.pushSprite(0, 0);                    
   planeSprite.pushSprite(0, 0 , 0);
+  screenSprite.pushSprite(0,0);
 }
 
 
