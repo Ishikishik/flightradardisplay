@@ -16,6 +16,8 @@ const float lat_max = 39.865; //画面上(北)端の経度
 const float lon_home = 139.529; //アンテナの経度
 const float lat_home = 35.651; //アンテナの緯度
 
+const int button = 0; //表示切り替えを入れるgpioピン
+
 //1度が何ピクセルに当たるかを計算(ディスプレイの大きさに合わせて調整)
 const float pic_lon = 320 / (lon_max - lon_min); 
 const float pic_lat = 240 / (lat_max - lat_min);
@@ -26,6 +28,8 @@ void setup(void) {
   lcd.setRotation(3);
   lcd.setBrightness(128);
   setupwifi(SSID, PASS);//wifiのセットアップ
+
+  pinMode( button, INPUT );
 
   mapSprite.setColorDepth(2);
   mapSprite.createSprite(320, 240);  
@@ -63,7 +67,14 @@ void setup(void) {
 }
 
 void loop(void) {
-  showairplane(IP, lon_min, pic_lon, lat_max, pic_lat);
-  //showjson(IP);
+  int buttonState = digitalRead(button);  // HIGH / LOW を取得
+
+  if (buttonState == HIGH) {
+    // ボタンが押されていない（プルダウン構成の場合）なら showjson
+    showjson(IP);
+  } else {
+    // ボタンが押されている（LOW）なら showairplane
+    showairplane(IP, lon_min, pic_lon, lat_max, pic_lat);
+  }
   delay(1000);  //更新間隔
 }
