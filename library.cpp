@@ -141,11 +141,8 @@ void showjson(const char* ip){
       Serial.println(error.f_str());
       return;
     }
-
-    lcd.fillScreen(TFT_BLACK);
-
-   int y = 10; // 最初の表示位置Y座標
-lcd.fillScreen(TFT_BLACK);  // 画面をクリア
+  int y = 10; // 最初の表示位置Y座標
+  planeSprite.fillScreen(TFT_BLACK);  // 画面をクリア
 
 for (JsonPair kv : doc.as<JsonObject>()) {
   JsonArray data = kv.value().as<JsonArray>();
@@ -156,10 +153,10 @@ for (JsonPair kv : doc.as<JsonObject>()) {
 
   if (lat != 0 && lon != 0 && strlen(callsign) > 0) {
     // 1行に1件表示（例：JJ5STB: 35.12, 139.44）
-    lcd.setCursor(10, y);
-    lcd.setTextColor(TFT_GREEN, TFT_BLACK);
-    lcd.setTextSize(1);
-    lcd.printf("%s: %.2f, %.2f", callsign, lat, lon);
+    planeSprite.setCursor(10, y);
+    planeSprite.setTextColor(1, 0);
+    planeSprite.setTextSize(1);
+    planeSprite.printf("%s: %.2f, %.2f", callsign, lat, lon);
 
     y += 12;  // 次の行へ（文字サイズ1なら12ピクセルくらい空ける）
     
@@ -172,6 +169,9 @@ for (JsonPair kv : doc.as<JsonObject>()) {
     showjson(ip); // もう一度だけ再試行
     return;
   }
+  screenSprite.fillScreen(0);                  
+  planeSprite.pushSprite(0, 0 , 0);
+  screenSprite.pushSprite(0,0);
 }
 
 
