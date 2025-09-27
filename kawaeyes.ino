@@ -5,8 +5,9 @@
 #include "secret.hpp"
 
 MyLGFX lcd;  // LGFX → MyLGFX に変更
-LGFX_Sprite mapSprite(&lcd);
-LGFX_Sprite planeSprite(&lcd);
+LGFX_Sprite mapSprite(&screenSprite);
+LGFX_Sprite planeSprite(&screenSprite);
+LGFX_Sprite screenSprite(&lcd);  // 新規スプライト
 
 const float lon_min = 135.755; //画面西(左)端の経度
 const float lon_max = 142.954; //画面東(右)端の経度
@@ -29,7 +30,7 @@ void setup(void) {
   mapSprite.setColorDepth(2);
   mapSprite.createSprite(320, 240);  
   mapSprite.createPalette();
-  mapSprite.setPaletteColor(0, 0x2E2E2EU);//黒
+  mapSprite.setPaletteColor(0, 0x000000U);//黒
   mapSprite.setPaletteColor(1, 0x00FF00U);//緑
   mapSprite.setPaletteColor(2, 0xFF6CFFU);//ピンク
 
@@ -37,8 +38,15 @@ void setup(void) {
   planeSprite.setColorDepth(1);
   planeSprite.createSprite(320, 240);  
   planeSprite.createPalette();
-  planeSprite.setPaletteColor(0, 0x2E2E2EU);//背景
-  planeSprite.setPaletteColor(1, 0x00FF00U);//緑        
+  planeSprite.setPaletteColor(0, 0x000000U);//背景
+  planeSprite.setPaletteColor(1, 0x00FF00U);//緑  
+  
+  screenSprite.setColorDepth(2);
+  screenSprite.createSprite(320, 240);  
+  screenSprite.createPalette();
+  screenSprite.setPaletteColor(0, 0x000000U);//黒
+  screenSprite.setPaletteColor(1, 0x00FF00U);//緑
+  screenSprite.setPaletteColor(2, 0xFF6CFFU);//ピンク  
 
 
   //自宅の位置をピクセル座標化
@@ -51,12 +59,11 @@ void setup(void) {
   }
   //自宅に丸い点を打つ
   mapSprite.fillCircle(lonpic_home, latpic_home , 2, 2);  
-  //mapSprite.pushSprite(0, 0);
   delay(10000);
 }
 
 void loop(void) {
   showairplane(IP, lon_min, pic_lon, lat_max, pic_lat);
   //showjson(IP);
-  //delay(3000);  //更新間隔
+  delay(1000);  //更新間隔
 }
