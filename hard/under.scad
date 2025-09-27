@@ -12,13 +12,13 @@ difference() {
     translate([0,0,1.5])
     cube([90, 51,6.8], center = true);
 
-    translate([90/2-15.8,-(64/2)+9,6])
+    translate([97/2-(13.4 + 5.5/2),-(64/2)+9,6])
     cube([6.5, 3,100], center = true);//端子
 
-    translate([90/2-18,-(64/2)+32.5,0])
+    translate([97/2-(14 + 10.3/2),-(64/2)+32.5,0])
     cube([10.4, 11,100], center = true);//ロータリースイッチ
 
-    translate([90/2-26.5,64/2,3.1])
+    translate([97/2-(24.7 + 17.8/2),64/2,3.1])
     cube([19, 30,5.7], center = true);//アンテナ
 
 
@@ -49,13 +49,13 @@ difference() {
     cylinder(h = 2, r = 3, center = false);
 
 
-    translate([90/2-8,-(64/2)+9,-9.8/2])
+    translate([90/2-6,-(64/2)+9,-9.8/2])
     cube([5, 1.5,2], center = true);//端子
 
 
-    translate([90/2-24,-(64/2)+9,-9.8/2])
+    translate([97/2-23,-(64/2)+9,-9.8/2])
     cube([5, 1.5,2], center = true);//端子
-    translate([90/2-24,-(64/2)+9,-9.8/2])
+    translate([97/2-23,-(64/2)+9,-9.8/2])
     rotate([0,0,90])
     cube([5, 1.5,2], center = true);//端子
 
