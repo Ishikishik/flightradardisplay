@@ -63,7 +63,7 @@ void showairplane(const char* ip, float lon_min, float pic_lon, float lat_max, f
       return;
     }
 
-planeSprite.fillScreen(0);
+backPlane->fillSprite(TFT_BLACK);
 
 for (JsonPair kv : doc.as<JsonObject>()) {
   JsonArray data = kv.value().as<JsonArray>();
@@ -76,7 +76,7 @@ for (JsonPair kv : doc.as<JsonObject>()) {
 
 
   if (lat != 0 && lon != 0 && strlen(callsign) > 0) {
-    planeSprite.fillCircle(lon, lat , 2, 1); 
+    backPlane->fillCircle(lon, lat , 2, 1); 
   }
 }
   } else {
@@ -85,7 +85,8 @@ for (JsonPair kv : doc.as<JsonObject>()) {
     return;
   }
   mapSprite.pushSprite(0, 0);                    
-  planeSprite.pushSprite(0, 0 , 0);
+  backPlane->pushSprite(0, 0 , 0);
+  std::swap(frontPlane, backPlane);
 }
 
 

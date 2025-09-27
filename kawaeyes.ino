@@ -6,7 +6,15 @@
 
 MyLGFX lcd;  // LGFX → MyLGFX に変更
 LGFX_Sprite mapSprite(&lcd);
-LGFX_Sprite planeSprite(&lcd);
+
+
+LGFX_Sprite planeA(&lcd);//ダブルバッファを使用
+LGFX_Sprite planeB(&lcd);
+LGFX_Sprite* frontPlane = &planeA;
+LGFX_Sprite* backPlane  = &planeB;
+
+
+
 
 const float lon_min = 135.755; //画面西(左)端の経度
 const float lon_max = 142.954; //画面東(右)端の経度
@@ -34,11 +42,17 @@ void setup(void) {
   mapSprite.setPaletteColor(2, 0xFF6CFFU);//ピンク
 
 
-  planeSprite.setColorDepth(1);
-  planeSprite.createSprite(320, 240);  
-  planeSprite.createPalette();
-  planeSprite.setPaletteColor(0, 0x2E2E2EU);//背景
-  planeSprite.setPaletteColor(1, 0x00FF00U);//緑        
+  planeA.setColorDepth(1);
+  planeA.createSprite(320, 240);  
+  planeA.createPalette();
+  planeA.setPaletteColor(0, 0x2E2E2E); // 背景色
+  planeA.setPaletteColor(1, 0x00FF00); // 緑
+
+  planeB.setColorDepth(1);
+  planeB.createSprite(320, 240);  
+  planeB.createPalette();
+  planeB.setPaletteColor(0, 0x2E2E2E); // 背景色
+  planeB.setPaletteColor(1, 0x00FF00); // 緑    
 
 
   //自宅の位置をピクセル座標化
