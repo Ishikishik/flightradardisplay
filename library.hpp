@@ -18,7 +18,8 @@ struct PlaneState {
 extern PlaneState planes[100];
 extern WiFiClient client;
 extern MyLGFX lcd;
-
+extern LGFX_Sprite mapSprite;
+extern LGFX_Sprite planeSprite;
 // 関数プロトタイプ
 void setupwifi(const char* ssid, const char* pass);
 void showairplane(const char* ip, float lon_min, float pic_lon, float lat_max, float pic_lat);

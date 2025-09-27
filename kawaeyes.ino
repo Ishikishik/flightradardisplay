@@ -5,7 +5,8 @@
 #include "secret.hpp"
 
 MyLGFX lcd;  // LGFX → MyLGFX に変更
-
+LGFX_Sprite mapSprite(&lcd);
+LGFX_Sprite planeSprite(&lcd);
 
 const float lon_min = 135.755; //画面西(左)端の経度
 const float lon_max = 142.954; //画面東(右)端の経度
@@ -23,24 +24,39 @@ void setup(void) {
   lcd.init();
   lcd.setRotation(3);
   lcd.setBrightness(128);
-  lcd.setColorDepth(24);
   setupwifi(SSID, PASS);//wifiのセットアップ
+
+  mapSprite.setColorDepth(2);
+  mapSprite.createSprite(320, 240);  
+  mapSprite.createPalette();
+  mapSprite.setPaletteColor(0, 0x2E2E2EU);//黒
+  mapSprite.setPaletteColor(1, 0x00FF00U);//緑
+  mapSprite.setPaletteColor(2, 0xFF6CFFU);//ピンク
+
+
+  planeSprite.setColorDepth(1);
+  planeSprite.createSprite(320, 240);  
+  planeSprite.createPalette();
+  planeSprite.setPaletteColor(0, 0x2E2E2EU);//背景
+  planeSprite.setPaletteColor(1, 0x00FF00U);//緑        
+
 
   //自宅の位置をピクセル座標化
   const int lonpic_home = (lon_home - lon_min) * pic_lon;
   const int latpic_home = (lat_max - lat_home) * pic_lat;
-  //背景(日本地図を描写)
-  lcd.fillScreen(TFT_DARKGRAY);  // OK
+  // Sprite初期化：画面全体と同じサイズ
+  mapSprite.fillScreen(0);
   for (int i = 0; i < NUM_LINES; ++i) {
-    lcd.drawLine(lines[i][0], lines[i][1], lines[i][2], lines[i][3], TFT_GREEN);
+    mapSprite.drawLine(lines[i][0], lines[i][1], lines[i][2], lines[i][3], 1);
   }
   //自宅に丸い点を打つ
-  lcd.fillCircle(lonpic_home, latpic_home , 2, 0xFE19);  
-  delay(10000); // 次の更新まで待機
+  mapSprite.fillCircle(lonpic_home, latpic_home , 2, 2);  
+  //mapSprite.pushSprite(0, 0);
+  delay(10000);
 }
 
 void loop(void) {
   showairplane(IP, lon_min, pic_lon, lat_max, pic_lat);
   //showjson(IP);
-  delay(3000);  //更新間隔
+  //delay(3000);  //更新間隔
 }

@@ -28,6 +28,9 @@ void setupwifi(const char* ssid, const char* pass) {
 }
 
 
+
+
+
 /*航空機とコードを地図上に表示するコード*/
 void showairplane(const char* ip, float lon_min, float pic_lon, float lat_max, float pic_lat){
   // 正しい形式でIPとポートを分けて接続
@@ -60,10 +63,7 @@ void showairplane(const char* ip, float lon_min, float pic_lon, float lat_max, f
       return;
     }
 
-    lcd.fillScreen(TFT_BLACK);
-
-   int y = 10; // 最初の表示位置Y座標
-lcd.fillScreen(TFT_BLACK);  // 画面をクリア
+planeSprite.fillScreen(0);
 
 for (JsonPair kv : doc.as<JsonObject>()) {
   JsonArray data = kv.value().as<JsonArray>();
@@ -76,19 +76,16 @@ for (JsonPair kv : doc.as<JsonObject>()) {
 
 
   if (lat != 0 && lon != 0 && strlen(callsign) > 0) {
-    lcd.fillCircle(lon, lat , 2, TFT_GREEN); 
-    // コールサインを右横に表示（少し右にずらす）
-    lcd.setTextColor(TFT_GREEN, TFT_BLACK);
-    lcd.setTextSize(1);
-    lcd.setCursor(lon + 4, lat - 3);  
-    lcd.print(callsign);
+    planeSprite.fillCircle(lon, lat , 2, 1); 
   }
 }
   } else {
     delay(1000);
-    showairplane(ip, lon_min, pic_lon, lat_max, pic_lat); // もう一度だけ再試行
+    showairplane(ip, lon_min, pic_lon, lat_max, pic_lat); 
     return;
   }
+  mapSprite.pushSprite(0, 0);                    
+  planeSprite.pushSprite(0, 0 , 0);
 }
 
 
