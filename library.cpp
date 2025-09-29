@@ -173,7 +173,3 @@ for (JsonPair kv : doc.as<JsonObject>()) {
   planeSprite.pushSprite(0, 0 , 0);
   screenSprite.pushSprite(0,0);
 }
-
-
-
-
