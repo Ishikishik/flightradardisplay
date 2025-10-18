@@ -75,6 +75,7 @@ void loop(void) {
   } else {
     // ボタンが押されている（LOW）なら showairplane
     showairplane(IP, lon_min, pic_lon, lat_max, pic_lat);
+    //showjson(IP);//デバック
   }
   delay(1000);  //更新間隔
 }
