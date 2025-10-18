@@ -25,6 +25,10 @@ void setupwifi(const char* ssid, const char* pass) {
     lcd.print("Connecting WiFi...");
     delay(500);
   }
+  // 接続成功時
+  lcd.fillRect(cx - 80, cy - 8, 160, 16, TFT_BLACK); // 前の文字を消す
+  lcd.setCursor(cx - 70, cy - 8);
+  lcd.print("Connection Success");
 }
 
 
@@ -34,9 +38,9 @@ void setupwifi(const char* ssid, const char* pass) {
 /*航空機とコードを地図上に表示するコード*/
 void showairplane(const char* ip, float lon_min, float pic_lon, float lat_max, float pic_lat){
   // 正しい形式でIPとポートを分けて接続
-  if (client.connect(ip, 8754)) {
-    client.println("GET /flights.json HTTP/1.0");
-    client.print("Host: ");
+  if (client.connect(ip, 8754)) {//自宅8754,外部80
+    client.println("GET /flights.json HTTP/1.0");//自宅:"GET /flights.json HTTP/1.0"外部:"GET / HTTP/1.1"
+    client.print("Host: ");//"Host: "
     client.println(ip);
     client.println("Connection: close");
     client.println();
@@ -113,9 +117,9 @@ for (JsonPair kv : doc.as<JsonObject>()) {
 /*コールサインをそのまま表示するコード*/
 void showjson(const char* ip){
   // 正しい形式でIPとポートを分けて接続
-  if (client.connect(ip, 8754)) {
-    client.println("GET /flights.json HTTP/1.0");
-    client.print("Host: ");
+  if (client.connect(ip, 8754)) {//自宅8754,外部80
+    client.println("GET /flights.json HTTP/1.0");//自宅:"GET /flights.json HTTP/1.0"外部:"GET / HTTP/1.1"
+    client.print("Host: ");//"Host: "
     client.println(ip);
     client.println("Connection: close");
     client.println();
