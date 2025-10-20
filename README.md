@@ -64,11 +64,10 @@ ESP32-C3 と小型液晶ディスプレイを使い、**フライトレーダー
 - **`参考画像`**  
   基板データはないがエクストリーム配線の様子を備忘録として残す。
 
-  - **`flask.py`**  
-  外でこの装置を動かしたい時、tailscaleに入ったpc(中間サーバー)を使う。
-  セキュリティ上の問題で以下の通りフィーダーの設定変更が必要
-  /etc/fr24feed.iniを開く
-  bind-interface="100.x.x.x"   # 中間サーバーにするPCの Tailscale IP
+  - **`repeater_flightradar`**  
+  外でこの装置を動かしたい時に[このリポジトリ](https://github.com/Ishikishik/repeater_flightradar)をチェック!
+  tailscaleに入ったpc(中間サーバー)からjsonをインターネットに公開して、他のネットワークからでもjsonを取得できる様にします。
+  
 
 ---
 
