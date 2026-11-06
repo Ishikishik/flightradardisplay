@@ -1,2 +1,7 @@
 secret.hpp
 build_cache/
+.DS_Store
+.history/
+pcb/_restore_backup_*/
+pcb/production/backups/
+*.kicad_prl
