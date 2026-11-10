@@ -10,5 +10,13 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     steps:
       - run: echo "サーバー関連の変更がpushされました"
+      - name: Tailscaleに接続
+        uses: tailscale/github-action@v4
+        with:
+          oauth-client-id: ${{ secrets.TS_OAUTH_CLIENT_ID }}
+          audience: ${{ secrets.TS_AUDIENCE }}
+          tags: tag:kawaeyes-ci
