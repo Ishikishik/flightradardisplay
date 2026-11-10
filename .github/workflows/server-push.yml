@@ -1,0 +1,14 @@
+name: サーバーの変更を検知
+
+on:
+  push:
+    branches: [feature-websocket]
+    paths:
+      - 'server/**'
+      - '.github/workflows/server-push.yml'
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "サーバー関連の変更がpushされました"
