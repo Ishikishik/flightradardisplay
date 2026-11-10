@@ -14,6 +14,7 @@ jobs:
       id-token: write
     steps:
       - run: echo "サーバー関連の変更がpushされました"
+
       - name: Tailscaleに接続
         uses: tailscale/github-action@v4
         with:
@@ -21,3 +22,22 @@ jobs:
           audience: ${{ secrets.TS_AUDIENCE }}
           tags: tag:kawaeyes-ci
           ping: kawaradar
+
+      - name: SSHでPiのホスト名を確認
+        env:
+          PI_HOST: ${{ secrets.PI_HOST }}
+          PI_SSH_KEY: ${{ secrets.PI_SSH_KEY }}
+          PI_KNOWN_HOSTS: ${{ secrets.PI_KNOWN_HOSTS }}
+        run: |
+          umask 077
+          ssh_dir=$(mktemp -d)
+          trap 'rm -rf "$ssh_dir"' EXIT
+          printf '%s\n' "$PI_SSH_KEY" > "$ssh_dir/key"
+          printf '%s\n' "$PI_KNOWN_HOSTS" > "$ssh_dir/known_hosts"
+          ssh -i "$ssh_dir/key" \
+            -o IdentitiesOnly=yes \
+            -o BatchMode=yes \
+            -o StrictHostKeyChecking=yes \
+            -o UserKnownHostsFile="$ssh_dir/known_hosts" \
+            -o ConnectTimeout=10 \
+            "$PI_HOST" hostname
