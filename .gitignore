@@ -1,14 +1,26 @@
-secret.hpp
-build_cache/
+# Mac
 .DS_Store
+
+# 秘密情報(トークン・Wi-Fi のパスワード)
+.env
+secret.h
+secret.hpp
+
+# Python
+__pycache__/
+
+# PlatformIO・arduino-cli のビルド結果
+.pio/
+build_cache/
+
+# KiCad の作業用ファイル
 .history/
+*.lck
+*.kicad_prl
+fp-info-cache
+*-backups/
 pcb/_restore_backup_*/
 pcb/production/backups/
-*.kicad_prl
-
-/.env
-__pycache__/
-secret.h
 
 # 国旗・ロゴの画像とお試し変換の結果: フォルダの形だけ残して中身は上げない(ロゴは各社の商標)
 firm/maketable/images/**
