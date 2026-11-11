@@ -5,3 +5,5 @@ build_cache/
 pcb/_restore_backup_*/
 pcb/production/backups/
 *.kicad_prl
+
+/.env

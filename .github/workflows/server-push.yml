@@ -23,21 +23,27 @@ jobs:
           tags: tag:kawaeyes-ci
           ping: kawaradar
 
-      - name: SSHでPiのホスト名を確認
+      - uses: actions/checkout@v4
+
+      - name: server/ をPiに配置して動作確認
         env:
           PI_HOST: ${{ secrets.PI_HOST }}
+          PI_DIR: ${{ secrets.PI_DIR }}
           PI_SSH_KEY: ${{ secrets.PI_SSH_KEY }}
           PI_KNOWN_HOSTS: ${{ secrets.PI_KNOWN_HOSTS }}
         run: |
+          : "${PI_DIR:?リポジトリのSecretsに PI_DIR を設定してください}"
           umask 077
           ssh_dir=$(mktemp -d)
           trap 'rm -rf "$ssh_dir"' EXIT
           printf '%s\n' "$PI_SSH_KEY" > "$ssh_dir/key"
           printf '%s\n' "$PI_KNOWN_HOSTS" > "$ssh_dir/known_hosts"
-          ssh -i "$ssh_dir/key" \
-            -o IdentitiesOnly=yes \
-            -o BatchMode=yes \
-            -o StrictHostKeyChecking=yes \
-            -o UserKnownHostsFile="$ssh_dir/known_hosts" \
-            -o ConnectTimeout=10 \
-            "$PI_HOST" hostname
+          ssh_cmd="ssh -i $ssh_dir/key -o IdentitiesOnly=yes -o BatchMode=yes -o StrictHostKeyChecking=yes -o UserKnownHostsFile=$ssh_dir/known_hosts -o ConnectTimeout=10"
+
+          $ssh_cmd "$PI_HOST" "mkdir -p '$PI_DIR'"
+          rsync -azc --delete-delay --itemize-changes \
+            --exclude='.env' \
+            --exclude='.venv/' \
+            --exclude='__pycache__/' \
+            -e "$ssh_cmd" \
+            server/ "$PI_HOST:$PI_DIR/"
