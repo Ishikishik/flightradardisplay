@@ -47,3 +47,6 @@ jobs:
             --exclude='__pycache__/' \
             -e "$ssh_cmd" \
             server/ "$PI_HOST:$PI_DIR/"
+
+          # パッケージ導入・トークン生成・サービス更新・再起動(setup.sh にまとめてある)
+          $ssh_cmd "$PI_HOST" "sudo bash '$PI_DIR/setup.sh'"
