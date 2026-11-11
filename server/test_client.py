@@ -1,11 +1,15 @@
 #!/usr/bin/env python3
 """配信を受信してバイナリを解読し、表で表示する確認用クライアント(Mac などで使う)。
 
-  python3 test_client.py "wss://kawaradar.otterstb.com/?token=xxxx"
+  python3 server/test_client.py              # リポジトリ直下の .env の KAWAEYES_URL を使う
+  python3 server/test_client.py "wss://..."  # URL を直接指定
+  python3 server/test_client.py --json       # JSON 形式で受信して表示
 """
 import asyncio
+import os
 import struct
 import sys
+from pathlib import Path
 
 import websockets
 
@@ -36,5 +40,21 @@ async def main(url: str) -> None:
                 print(msg)
 
 
+def find_url(args: list[str]) -> str:
+    urls = [a for a in args if a.startswith("ws")]
+    url = urls[0] if urls else os.environ.get("KAWAEYES_URL", "")
+    if not url:
+        env = Path(__file__).resolve().parent.parent / ".env"   # リポジトリ直下(git 管理外)
+        if env.exists():
+            for line in env.read_text().splitlines():
+                if line.startswith("KAWAEYES_URL="):
+                    url = line.split("=", 1)[1].strip().strip('"')
+    if not url:
+        sys.exit("URL がありません。引数か、リポジトリ直下の .env に KAWAEYES_URL=... を書いてください")
+    if "--json" in args:
+        url += "&format=json"
+    return url
+
+
 if __name__ == "__main__":
-    asyncio.run(main(sys.argv[1]))
+    asyncio.run(main(find_url(sys.argv[1:])))

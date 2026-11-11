@@ -7,3 +7,4 @@ pcb/production/backups/
 *.kicad_prl
 
 /.env
+__pycache__/
