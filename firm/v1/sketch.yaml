@@ -1,0 +1,2 @@
+# arduino-cli 用の設定。このフォルダで compile / upload するときに FQBN を省略できる
+default_fqbn: esp32:esp32:esp32c3:CDCOnBoot=cdc

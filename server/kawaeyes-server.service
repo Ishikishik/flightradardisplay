@@ -1,0 +1,23 @@
+# テンプレート。setup.sh が @DIR@ と @USER@ を置き換えて
+# /etc/systemd/system/kawaeyes-server.service に配置する(直接コピーしないこと)
+[Unit]
+Description=kawaeyes ADS-B WebSocket server
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=@USER@
+WorkingDirectory=@DIR@
+EnvironmentFile=@DIR@/.env
+ExecStart=/usr/bin/python3 -u @DIR@/adsb_ws_server.py
+Restart=always
+RestartSec=3
+
+# 最低限のサンドボックス
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=read-only
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
