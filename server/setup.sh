@@ -1,4 +1,5 @@
-# ライブラリ自動で入れるやつ
+# ライブラリ自動で入れる
+# トークンを発行する
 set -euo pipefail
 
 SERVICE=kawaeyes-server
