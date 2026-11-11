@@ -1,10 +1,8 @@
 #ifndef GETJSON_HPP
 #define GETJSON_HPP
 
-#include <WiFi.h>
-#include <ArduinoJson.h>
+
 #include "lgfxesp32c3.hpp"
-#include "library.hpp"
 
 // 飛行機の状態管理
 struct PlaneState {
@@ -15,7 +13,6 @@ struct PlaneState {
 };
 
 // 外部から使えるグローバル変数
-extern PlaneState planes[100];
 extern WiFiClient client;
 extern MyLGFX lcd;
 extern LGFX_Sprite mapSprite;

@@ -8,3 +8,11 @@ pcb/production/backups/
 
 /.env
 __pycache__/
+secret.h
+
+# 国旗・ロゴの画像とお試し変換の結果: フォルダの形だけ残して中身は上げない(ロゴは各社の商標)
+firm/maketable/images/**
+!firm/maketable/images/**/
+!firm/maketable/images/**/.gitkeep
+firm/maketable/preview/*
+!firm/maketable/preview/.gitkeep

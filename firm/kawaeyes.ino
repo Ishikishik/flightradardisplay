@@ -79,7 +79,3 @@ void loop(void) {
   }
   delay(1000);  //更新間隔
 }
-
-
-//6=showplane
-//5=showjson

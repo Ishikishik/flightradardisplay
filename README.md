@@ -1,89 +1,41 @@
 # フライトレーダー表示プロジェクト
+ご自宅で受信しているADS-Bの情報をいい感じの可愛いディスプレイに映す
 
-<img src="参考画像/IMG_5067.jpg" alt="代替テキスト" width="400">
-<img src="参考画像/IMG_5068.jpg" alt="代替テキスト" width="400">
-
-ESP32-C3 と小型液晶ディスプレイを使い、**フライトレーダーのフィード状況を表示するデバイス**です。  
-ラズベリーパイを使った例よりも、**安価かつコンパクト**に構築できます。
-
----
-
-## 使用部品
-
-| 部品 | 説明・購入先 |
-| ---- | ----------- |
-| [ESP32-C3](https://akizukidenshi.com/catalog/g/g117493/) | メインマイコン |
-| [1.54インチ TFT 液晶](https://akizukidenshi.com/catalog/g/g116265/) | 地図・便名表示用 |
-| [USB Type-C コネクタ DIP 化キット](https://akizukidenshi.com/catalog/g/g115426/) | 電源・書き込み用 |
-| コンデンサ / 抵抗 / 3端子レギュレータ | 電源安定化などに適宜使用 |
-|ロータリースイッチ | 型番不明 |
-
----
-
-## コード構成
-
-### 1. 地図生成ツール(makemap)
-- **`makemap.py`**  
-  指定した緯度・経度範囲の白黒地図を生成します。  
-  ご自分の地域に合わせてパラメータを設定してください。
-- **`tolist.py`**  
-  生成した白黒地図を **LCD に描画しやすい線形データ** に変換します。
-
-### 2. 本体コード `kawaeyes`
-- **`kawaeyes.ino`**  
-  ESP32-C3 で動作するメインプログラム。
-- **`library.cpp`**  
-  - `setupwifi()`：Wi-Fi 接続処理  
-  - `showairplane()`：飛行機の位置と便名を地図上に表示  
-  - `showjson()`：便名と位置を文字のみで表示
-- **`mapdata.cpp`**  
-  東京都調布市（カワウソの住処）を例に `makemap` で生成した地図データ。
-
-- **`secret.hpp`**  
-  **Wi-Fi の SSID / パスワード / フィーダーの IP を定義するため、作成してください。**  
-  下記の例を参考に、自分の環境に合わせて内容を編集します。
-
-  ```cpp
-  #ifndef SECRET_HPP
-  #define SECRET_HPP
-
-  #define SSID ""    // Wi-Fi SSID
-  #define PASS ""    // Wi-Fi パスワード
-  #define IP   ""    // フィーダーの IP
-                          // 例: http://<IP>:8754/flights.json
-                          // もしエンドポイントが異なる場合は
-                          // getjson.cpp 内の showjson() を調整してください
-
-  #endif
+# フォルダ構成と補足情報
+## firm
+- esp32に書き込む情報(arduino-cliで開発)
+### 手順
+1. 最初にmaketable.pyを使ってtable(地図データ、航空会社,国対応表、国,航空会社野画像)を作る
+- 著作権の関係から画像は載っていません
+1. secret.cppを以下のように追加
+1. setting.cppをいい感じに編集
+## pcb
+- 銅箔の情報
+- 単三2本かtype-cで給電(typec側を優先する回路付き)
+## hard
+- 外装
+- カメラと同じネジで固定可能
+## server
+- ご自宅のラズパイが呟くadsb情報jsonをバイナリ形式にしてwebsocketで呟く(プロトコルは[こちら](/server/PROTOCOL.md))
 
 
 
-### 3. その他(hard,参考画像)
-- **`hard`**  
-  筐体の3Dデータ(.scadと.stlがある)
-- **`参考画像`**  
-  基板データはないがエクストリーム配線の様子を備忘録として残す。
+# おせわになりました。
+- [ICAOから航空会社、国を特定する部分](https://raw.githubusercontent.com/vradarserver/standing-data/main/)
+  - Virtual Radar Server standing-data(CC0)
+- [航空会社の画像](https://github.com/anhthang/soaring-symbols)
+  - soaring-symbols(MIT)。尾翼マーク・社名ロゴの SVG
+- [航空会社の画像(追加分)](https://github.com/Jxck-S/airline-logos)
+  - Jxck-S/airline-logos。soaring-symbols にない会社を補完
+- [国旗の画像](https://flagcdn.com)
+  - flagcdn.com
+- [地図(海岸線)](https://www.naturalearthdata.com)
+  - Natural Earth(パブリックドメイン)のデータを cartopy で描画して作成
+- [液晶の描画](https://github.com/lovyan03/LovyanGFX)
+  - LovyanGFX
+- [WebSocket(ESP32 側)](https://github.com/Links2004/arduinoWebSockets)
+  - arduinoWebSockets
+- [WebSocket(サーバー側)](https://github.com/python-websockets/websockets)
+  - websockets(Python)
 
-  - **`repeater_flightradar`**  
-  外でこの装置を動かしたい時に[このリポジトリ](https://github.com/Ishikishik/repeater_flightradar)をチェック!
-  tailscaleに入ったpc(中間サーバー)からjsonをインターネットに公開して、他のネットワークからでもjsonを取得できる様にします。
-  
-
----
-
-## 参考リンク
-- [LovyanGFX ライブラリ（LCD制御）](https://github.com/lovyan03/LovyanGFX)
-- [ESP32 書き込み手順 (Qiita)](https://qiita.com/McbeEringi/items/b791399b03aba0929368)
-
----
-
-## 使い方
-
-1. **地図データ作成**  
-   `makemap.py` で範囲を指定して白黒地図を生成 → `tolist.py` で LCD 用データに変換。
-
-2. **ESP32-C3 へ書き込み**  
-   生成した `mapdata.cpp` をプロジェクトに追加し、`kawaeyes.ino` をビルド＆書き込み。
-
-3. **起動**  
-   電源投入後、自動的に Wi-Fi へ接続し、フライトレーダーのフィードを取得して地図上に便名と位置を表示します。
+航空会社のロゴは各社の商標・著作物です。このリポジトリには含めていません(`firm/maketable/images/` は中身を git 管理外にしています)。必要な場合は `maketable.py --images` で各自取得してください。
